@@ -1,0 +1,29 @@
+services:
+
+  front-app:
+    container_name: front-app
+    build: 
+      context: .
+      dockerfile: ./front/Dockerfile
+    ports: 
+      - "3000:3000"
+    volumes:
+      - ./front:/app/front
+  back-app:
+    build:
+      dockerfile: ./server/Dockerfile
+    ports:
+      - "8000:8000"
+    container_name: back-app
+    volumes:
+      - ./server:/app/server
+    links:
+      - mongo-db
+
+  mongo-db:
+    image: mongo
+    ports:
+      - "27017:27017"
+    container_name: mongo-db
+    volumes:
+      - ./db:/data/db
